@@ -1,0 +1,423 @@
+---
+title: "Introduction to R and RStudio Workshop"
+author: "Tess Grynoch, tess.grynoch@umassmed.edu"
+date: "April 2024"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Brief Introduction to R and RStudio
+The term "R" is used to refer to both the programming language and the software that interprets the scripts written using it.
+
+RStudio is currently a very popular way to not only write your R scripts but also to interact with the R software. To function correctly, RStudio needs R and therefore both need to be installed on your computer.
+
+To make it easier to interact with R, we will use RStudio. RStudio is the most popular IDE (Integrated Development Interface) for R. An IDE is a piece of software that provides tools to make programming easier.
+
+Reasons to use R:
+
+* Easy to reproduce (less pointing and clicking)
+* Able to analyze data and create visualizations without altering the data we input into our script regardless of the analysis we run
+* Analysis and visualization possibilities are limitless and cross disciplinary boundaries
+* Works on all types and sizes of data
+* Open source
+* Large and welcoming community
+
+### Quick tour of RStudio
+Let's take a quick tour of RStudio.
+
+![](RStudioScreenshot.png){alt='Screenshot of the RStudio\_startup screen'}
+
+RStudio is divided into four "panes". The placement of these
+panes and their content can be customized (see menu, Tools -> Global Options ->
+Pane Layout).
+
+The Default Layout is:
+
+- Top Left - **Source**: your scripts and documents
+- Bottom Left - **Console**: what R would look and be like without RStudio
+- Top Right - **Environment/History**: look here to see what you have done
+- Bottom Right - **Files** and more: see the contents of the project/working
+  directory here, like your Script.R file
+
+### Installing packages
+To expand on the functions already available in the base R, we need to install packages. Today we'll be using tidyverse which is a collection of R packages for data science. For more information on the packages, visit the [tidyverse website](https://www.tidyverse.org/). Type the following code into the console or use the install button on the packages tab to install tidyverse.
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+
+## Create a new project
+* Under the File menu > New Project > (Choose Existing directory if you already have a folder you want to use for today's workshop or New directory if you want to create the folder > Create project (This is now our working directory)
+* It's good practice to keep all related data, analysis, and text in the same folder in order to use relative paths as opposed to the full path to the file's location. Another best practice is to create a separate folders for your data, data outputs, and figure outputs. So let's create three folders in our working directory called:
+  * data
+  * data_output 
+  * fig_output 
+* [Download the data we will be working with today](https://github.com/grynoch/intro-r/blob/master/sample.csv) and add it to the data folder. 
+* Create a new file where we will type our scripts. Go to File > New File > R script OR click the plus sign hovering over the white rectangle in the toolbar. Click the save icon on your tooolbar, or, in the menu, File > Save As and save your script as "Intro-R-class-20240426.R"
+
+Start by giving our document a title using a comment which are denoted by a #
+```{r eval=FALSE}
+#Introduction to R and RStudio Class April 2024
+#Instructor: Tess Grynoch
+#Notes by Name
+
+#Comments allow you to add notes as you write your code
+```
+Notice how after we start making changes the file name in the tab turns red and has an * beside it. It's a reminder that we have not saved the new changes to the document yet. As we go along, remember to hit the save icon or control + s (On PC) or command + s (On Mac).  
+
+### Math operations
+R and Rstudio have a number of basic built-in functions and arithmetic that make it an excellent calculator. 
+
+|     |           |
+|:---:|:----------|
+|+    | Add       |
+|-    | Subtract  |
+|*    | Multiply  |
+|/    | Divide    |
+|^    |Exponents  |
+
+
+
+R also follows the order of operations denoted by ()
+
+
+To run a line or block of code, move your cursor to anywhere on the line or within the block and press control + enter (On PC) or command + return (On Mac).
+```{r}
+2+2
+```
+
+### Comparison operations
+Comparison operations return whether something is true or false based on logic/Boolean
+```{r}
+#greater than >
+4>2
+#less than <
+2<4
+#equals ==
+2==4
+#does not equal !=
+2!=4
+#less than or equal to <=
+2<=2
+#greater than or equal to >=
+2>=2
+```
+### Variable/Object creation
+You can store values in variables using a <- to point to the name you want to use. This allows you use the variable name in place of the value. Values that can be turned into variables include numbers, vectors, tables, functions, or plots. 
+```{r}
+4+2
+y <- 4
+y+2 #using the variable in place of the value
+y #to print the value of the object, type it's name 
+(y <- 4) #or put parenthesis around the assignment
+```
+R is also case sensitive so make sure to spell correctly. 
+```{r eval=FALSE}
+y+2
+Y+2 #You will get an error saying object 'Y' not found (Note you can also add a comment to the end of a line of code)
+```
+You can also overwrite a variable name
+```{r}
+y <- 6
+y+2
+#assign the results to a new variable
+x <- y+2
+
+#and change x
+x <- 10
+
+#Activity: What is the current content of y? 8 or 6?
+```
+The right hand side of the assignment can be any valid R expression. The right hand side is fully evaluated before the assignment occurs.
+
+Variable names can contain letters, numbers, underscores and periods. They cannot start with a number nor contain spaces at all. Different people use different conventions for long variable names, these include
+
+* periods.between.words
+* underscores_between_words
+* camelCaseToSeparateWords
+What you use is up to you, but *be consistent*.
+
+### Vectors
+R is vectorized, meaning that variables and functions can have vectors as values. In contrast to physics and mathematics, a vector in R describes a set of values in a certain order of the same data type.The 6 basic data types are:
+
+* character: "a", "fish"
+* numeric (real or decimal): 2, 15.5
+* integer: 2L (the L tells R to store this as an integer)
+* logical: TRUE, FALSE
+* complex: 1+4i (complex numbers with real and imaginary parts)
+
+```{r}
+#two different ways to create vectors
+1:5
+c(1,2,3,4,5)
+x <- 1:5 #we'll assign this vector as the variable x
+```
+You may not of realized it, but we just used our first function. c denotes combine in R. To find out more about any function or library, you can put a question mark in front of the function or library name and run the line to get the help documentation which includes the arguments the function accepts and examples of function use.
+```{r eval=FALSE}
+?c
+```
+You can also apply math operations and functions to vectors
+```{r}
+2*x
+```
+Caution that, if you add a character to an integer vector, the whole vector becomes characters.
+```{r}
+y <- c(1,2,3,4,"5")
+#Use the class function to find out the type of vector you have
+class(y)
+```
+```{r eval=FALSE}
+#Activity: What class is each of these vectors with a mixture of values?
+num_logical <- c(1, 2, 3, TRUE)
+char_logical <- c("a", "b", "c", TRUE)
+```
+Never fear! You can convert your vector to a different data type
+```{r}
+y <- as.numeric(y) #overwriting a variable
+```
+
+### Print statements
+While RStudio prints the output of functions in the console and displays variables in the top right, if we are using R through the command line, you can use print statements to view the variable. Print statements are also useful in complicated functions to explicitly state the result.
+```{r}
+print(x)
+z <- 8/4
+print(c('Solution A is',z,'times as strong as solution B'))
+```
+
+### Add libraries
+While you only need to install packages once per computer, you need to indicate which libraries you are using with each R session. So, it's good practice to list all the libraries you will be using at the top of your R script.
+
+```{r}
+library(tidyverse)
+```
+### Reading files into R
+To use data in R and RStudio we must first read it into the environment and assign it a variable name.
+```{r}
+sample <- read_csv("data/sample.csv")
+```
+I've used the relative path to the file above but if I were to use the full destination name it would look something like "C://Users/grynochc/Desktop/Intro-R-class-20191209/Data/sample.csv"
+&nbsp;
+You can read other files into R using similar functions such as: 
+```{r eval=FALSE}
+#Excel files
+library(readxl)
+read_xlsx
+
+#SAS, SPSS, STATA files
+library(haven)
+read_sas() 
+read_spss()
+read_stata()
+```
+
+### Data exploration and exploratory statistics
+Once you bring your data into RStudio, one of the first things you should do is get oriented to it. Even if you collected the data yourself or are already familiar with the data in its original format, I recommend running through some basic functions and exploratory statistics to check how the data was imported and ensure that there are no unexpected surprises.
+You can also view the full table by clicking on the table icon to the right of the data but this is not always useful with large datasets and I also don't like moving between tabs.
+```{r}
+head(sample)
+tail(sample)
+str(sample) #gives class and head of each column/variable 
+names(sample) #column names
+dim(sample) #dimensions
+nrow(sample) #number of rows
+ncol(sample) #number of columns
+```
+We can also examine a particular column by using $ColumnName to call that column.
+```{r}
+sample$Age
+```
+R has a number of built in statistical functions and these can be further extended with specific libraries.
+```{r}
+mean(sample$Age)
+min(sample$Age)
+max(sample$Age)
+median(sample$Age)
+```
+Instead of running these basic statistics for each column, we can run a summary:
+```{r}
+summary(sample)
+```
+
+### Dataframe basics - that also work with tibbles
+Just as in other programs such as Excel and Python, dataframes are navigated using rows and column numbers. In R the notation is [rows, columns]. Leaving the rows blank will bring back all rows and leaving the columns blank will bring back all columns. (Note: counting starts at 1, not 0 for those familiar with Python)
+&nbsp;
+For example, if I wanted to view the 4th row: 
+```{r}
+sample[4,]
+```
+We can also call a single datapoint using the same technique
+```{r}
+sample[4,3]
+```
+Or we can call a section of datapoints
+```{r}
+sample[1:4,c(3, 5)]
+```
+
+### Data cleaning
+We noticed that there were some capital M and F in the gender column. To ensure accurate analysis we want to turn those into small m and f to match the majority of the cells.
+Let's start with cleaning up the Ms and I'm going to break down the operation into its components
+```{r}
+sample[sample$Gender=='M', ] #gives me all the rows with Gender M
+sample[sample$Gender=='M', ]$Gender #isolates the gender column of those rows
+sample[sample$Gender=='M', ]$Gender <- 'm' #replace with small m (This is our final operation)
+#let's check that it worked
+table(sample$Gender)
+```
+Run the same operation for the Fs
+```{r}
+sample[sample$Gender=='F', ]$Gender <- 'f'
+#let's check that it worked
+table(sample$Gender)
+```
+
+### Selecting columns and filtering rows with dplyr
+Another way to subset your data with the tidyverse package is the use the select and filter functions. To select columns of a dataframe, use select(). The first argument to this function is the dataframe (sample), and the subsequent arguments are the columns to keep, separated by commas. 
+```{r}
+#select columns throughout the dataframe
+select(sample, Group, Gender, Aneurisms_q1)
+#select series of connected columns
+select(sample, Group, Gender, Aneurisms_q1:Aneurisms_q4)
+```
+To choose rows based on specific criteria, we can use the filter() function. The argument after the dataframe is the condition we want our final dataframe to adhere to (e.g. Gender is Female)
+```{r}
+#filter records for Female patients
+filter(sample, Gender == "f")
+#can also specify multiple conditions with "and" or "or" statements
+#"and" operator is a comma or &
+#"or" operator is a vertical bar |
+filter(sample, Gender == "f", Age > 18)
+filter(sample, Aneurisms_q1 >200 | Aneurisms_q2 >200)
+```
+What if you want to select and filter at the same time? There are three ways to do this: use intermediate steps, nested functions, or pipes.
+```{r}
+#Intermediate steps
+sample2 <- select(sample, Group, Gender, Aneurisms_q1:Aneurisms_q4)
+sample3 <- filter(sample2, Gender == "f")
+```
+```{r}
+#Nested functions
+sample4 <- filter(select(sample, Group, Gender, Aneurisms_q1:Aneurisms_q4), Gender == "f")
+```
+The last option, pipes, are a recent addition to R. Pipes let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset.
+```{r}
+sample %>% 
+  filter(Gender == "f") %>% 
+  select(Group, Gender, Aneurisms_q1:Aneurisms_q4)
+```
+Activity: Using pipes, subset the sample data to include patients are over 18 and had more than 200 aneurisms in Q1 and retain only the columns for Gender, Group, and Blood Pressure.
+
+### Writing files from R
+To save the cleaning that we performed on the data, we can export the new sample dataframe as a file
+```{r eval=FALSE}
+write.csv(sample, "./data_output/sample_v2.csv")
+```
+### Basic plots
+ggplot2 comes as part of tidyverse and can be used to create a number of different plots. Today we'll cover a couple of basic ones, bar charts and dot plots, but the premise behind building a chart in ggplot is the same for all charts.
+
+####Bar chart
+
+With any ggplot chart, you start with what data you will be using. 
+```{r eval=FALSE}
+ggplot(data=sample)
+```
+
+
+
+
+Next, we'll define our plot area (mapping) using the aesthetic (aes) function. This generates a blank plot.
+```{r}
+ggplot(data=sample, mapping=aes(x=Gender))
+```
+
+
+
+We add the various elements to the chart as geoms with a + symbol on the previous line which will automatically indent the next line to keep all our code in a block to run together.
+```{r}
+ggplot(data=sample, mapping=aes(x=Gender))+
+  geom_bar()
+```
+
+
+The mapping can also be assigned to a particular geom
+```{r}
+ggplot(data=sample)+
+  geom_bar(mapping=aes(x=Gender))
+```
+
+
+You can find out the other arguments and aesthetics that can be used in the geom by viewing the help documentation
+```{r eval=FALSE}
+?geom_bar
+```
+
+
+
+For example, we can adjust the width of the columns
+```{r}
+ggplot(data=sample, mapping=aes(x=Gender))+
+  geom_bar(width=0.4)
+```
+
+
+
+**Dot plot**
+```{r}
+ggplot(data=sample, mapping=aes(x=Age, y=Aneurisms_q1))+
+  geom_point(aes(colour=Group))
+```
+
+
+```{r eval=FALSE}
+?geom_point
+```
+```{r}
+q1results <- ggplot(data=sample, mapping=aes(x=Age, y=Aneurisms_q1))+
+  geom_point(aes(colour=Group))
+```
+To save the chart you created use the ggsave function
+```{r eval=FALSE}
+ggsave("./fig_output/q1results.png", q1results)
+```
+## Further resources for learning R
+* [R for Data Science (2ed)](https://r4ds.hadley.nz/) by Hadley Wickham & Garrett Grolemund
+* [Software Carpentry Lessons](https://software-carpentry.org/lessons/)
+* [Data Carpentry Lessons](https://datacarpentry.org/lessons/)
+* [Sage Research Methods R Tutorials](https://library.umassmed.edu/node/97). There are two video series in particular and I've linked the first video from each series
+    * [Practical Data Management with R](https://methods.sagepub.com/video/introduction-to-rstudio-installing-r-on-windows?seq=1)
+    * [Introduction to Data Science with R](https://methods.sagepub.com/video/introduction-to-r?seq=1)
+* [R/Medicine Conference](https://rconsortium.github.io/RMedicine_website/) June 10-14 online. Early bird pricing ends May 14.
+
+## R Cheat Sheets
+* [Posit Cheat Sheets](https://posit.co/resources/cheatsheets/) - ggplot2, tidyr, dplyr
+* [Base R Cheat Sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+
+&nbsp;  
+Materials from a number of different sources were used in the creation of this class including:
+
+* The Carpentries' (previously Data Carpentry's) R for Social Scientists used under the CC-BY 4.0 license.  
+* The Carpentries' (previously Software Carpentry) Programming with R used under the CC-BY 4.0 license.
+* The Carpentries' (previously Software Carpentry) R for Reproducible Scientific Analysis used under the the CC-BY 4.0 license.
+* R Course by Nick Hathaway as part of the UMMS Bootstrappers Courses
+&nbsp;
+&nbsp;
+&nbsp;  
+![](https://i.creativecommons.org/l/by/4.0/88x31.png) &nbsp; This work is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/) by Tess Grynoch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
